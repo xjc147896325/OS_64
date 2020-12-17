@@ -34,7 +34,7 @@
 	; flash
 		mov 	bx, 	000fh
 		mov 	dx, 	0000h
-		mov 	cx, 	10
+		mov 	cx, 	32
 		push 	ax
 		mov 	ax, 	ds
 		mov 	es,		ax
@@ -51,7 +51,7 @@
 		jmp 	$
 		
 		
-	StartMootMessage:	db 		"Sha Bi"
+	StartMootMessage:	db 		"Start Boot(by xjc at 2020/12/17)"
 	
 	;======= 	fill zero until while sector
 	
