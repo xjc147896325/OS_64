@@ -1,8 +1,8 @@
 	org 	0x7c00
 
-Baseofstack 	equ 	0x7c00
+BaseOfStack 	equ 	0x7c00
 
-BaseofLoader	equ 	0x1000
+BaseOfLoader	equ 	0x1000
 OffsetOfLoader	equ 	0x00
 
 RootDirSectors 				equ 	14
@@ -158,14 +158,14 @@ Label_FileName_Found:
 	push 			cx
 	add				cx,			ax
 	add				cx,			SectorBalance
-	mov				ax,			BaseofLoader
+	mov				ax,			BaseOfLoader
 	mov				es,			ax
 	mov				bx,			OffsetOfLoader
 	mov				ax,			cx
 	
 Label_Go_On_Loading_File:
 	push			ax
-	puah			bx
+	push			bx
 	mov				ah,			0eh
 	mov				al,			'%'
 	mov				bl,			0fh
@@ -274,7 +274,7 @@ Odd					db	0
 
 ;=========	display messages
 
-StartMootMessage:	db 		"Start Boot(by xjc at 2020/12/17)"
+StartMootMessage:	db 		"Start Boot(by xjc at 2020/12/19)"
 NoLoaderMessage:	db		"ERROR: No LOADER Found"
 LoaderFileName:		db		"LOADER  Bin",0
 
