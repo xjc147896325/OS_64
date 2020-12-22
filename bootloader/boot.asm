@@ -30,7 +30,7 @@ SectorBalance				equ		17
 	BS_BootSig			db	29h
 	BS_VolID			dd	0
 	BS_VolLab			db	'boot loader'
-	BS_fileSysType		db	'FAT12	'
+	BS_fileSysType		db	'FAT12   '
 
 Label_Start:
 
@@ -118,7 +118,7 @@ Label_Cmp_FileName:
 Label_Go_On:
 
 	inc				di;
-	jmp				Label_Search_For_LoaderBin
+	jmp				Label_Cmp_FileName
 	
 Label_Different:
 
@@ -138,8 +138,8 @@ Label_No_LoaderBin:
 	
 	mov				ax,			1301h
 	mov				bx,			008ch
-	mov				cx,			22
 	mov				dx,			0100h
+	mov				cx,			22
 	push 			ax
 	mov				ax,			ds
 	mov				es,			ax
@@ -188,7 +188,7 @@ Label_Go_On_Loading_File:
 	
 Label_File_Loaded:
 
-	jmp				$
+	jmp				BaseOfLoader:OffsetOfLoader
 
 ;=======		read one sector from floppy
 Func_ReadOneSector:
