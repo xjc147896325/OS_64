@@ -1,4 +1,6 @@
 ;65页
+;70页
+
 org 	10000h
 
 	jmp Label_Start
@@ -482,6 +484,8 @@ Label_SVGA_Mode_Info_Finish:
 	or	eax,	1
 	mov	cr0,	eax	
 
+	;jmp $
+	
 	jmp	dword SelectorCode32:GO_TO_TMP_Protect
 
 [SECTION .s32]
@@ -535,6 +539,7 @@ GO_TO_TMP_Protect:
 
 	mov	esp,	7E00h
 
+	;jmp $
 ;=======	open PAE
 
 	mov	eax,	cr4

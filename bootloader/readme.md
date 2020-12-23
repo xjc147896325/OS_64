@@ -32,3 +32,7 @@ ldtr:0x0000, dh=0x00008200, dl=0x0000ffff, valid=1
 tr:0x0000, dh=0x00008b00, dl=0x0000ffff, valid=1
 gdtr:base=0x0000000000000000, limit=0xffff
 idtr:base=0x0000000000000000, limit=0xffff
+
+**23:**
+
+没看完书，有点吃不动了，代码逻辑理了一遍。感觉差不多？loader主要负责硬件信息的检测、kernel加载和模式切换(实模式【real】->保护模式【protect】->IA-32e模式)
