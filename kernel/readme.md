@@ -4,3 +4,11 @@
 类似于[Section .data]定义该段位.data
 
 .quad定义后续为4字(8字节)，64bit
+
+.fill 
+
+     语法：.fill repeat, size, value
+
+     含义是反复拷贝 size个字节，重复 repeat 次，
+
+         其中 size 和 value 是可选的，默认值分别为 1 和 0. 
