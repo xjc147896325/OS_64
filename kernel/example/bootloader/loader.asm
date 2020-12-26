@@ -1,16 +1,27 @@
-;65页
-;70页
+;/***************************************************
+;		版权声明
+;
+;	本操作系统名为：MINE
+;	该操作系统未经授权不得以盈利或非盈利为目的进行开发，
+;	只允许个人学习以及公开交流使用
+;
+;	代码最终所有权及解释权归田宇所有；
+;
+;	本模块作者：	田宇
+;	EMail:		345538255@qq.com
+;
+;
+;***************************************************/
 
-org 	10000h
+org	10000h
+	jmp	Label_Start
 
-	jmp Label_Start
-	
-%include "fat12.inc"
+%include	"fat12.inc"
 
-BaseOfKernelFile		equ	0x00
-OffsetOfKernelFile		equ	0x100000
+BaseOfKernelFile	equ	0x00
+OffsetOfKernelFile	equ	0x100000
 
-BaseTmpOfKernelAddr		equ	0x00
+BaseTmpOfKernelAddr	equ	0x00
 OffsetTmpOfKernelFile	equ	0x7E00
 
 MemoryStructBufferAddr	equ	0x7E00
@@ -23,7 +34,7 @@ LABEL_DESC_DATA32:	dd	0x0000FFFF,0x00CF9200
 
 GdtLen	equ	$ - LABEL_GDT
 GdtPtr	dw	GdtLen - 1
-	dd	LABEL_GDT
+	dd	LABEL_GDT	;be carefull the address(after use org)!!!!!!
 
 SelectorCode32	equ	LABEL_DESC_CODE32 - LABEL_GDT
 SelectorData32	equ	LABEL_DESC_DATA32 - LABEL_GDT
@@ -41,42 +52,40 @@ GdtPtr64	dw	GdtLen64 - 1
 SelectorCode64	equ	LABEL_DESC_CODE64 - LABEL_GDT64
 SelectorData64	equ	LABEL_DESC_DATA64 - LABEL_GDT64
 
-
 [SECTION .s16]
 [BITS 16]
 
 Label_Start:
-	mov 	ax,		cs
-	mov		ds,		ax
-	mov		es, 	ax
-	mov 	ax, 	0x00
-	mov		ss,		ax
-	mov		sp,		0x7c00
-	
-	
-;========		display on screen : Srart Loader......
 
-	mov		ax,		1301h
-	mov 	bx,		000fh
-	mov		dx,		0200h			;row 2
-	mov 	cx,		34
-	push 	ax,
-	mov		ax,		ds
-	mov		es,		ax
-	pop		ax
-	mov		bp,		StartLoaderMessage
-	int 	10h
-	
-;========		open address A20 读入92h端口状态，引脚p21拉高 输出 CLI关闭外部中断 LGDT加载保护模式结构数据信息 置位CR0寄存器的第0位来开启保护模式
-	push 	ax
-	in		al, 	92h
-	or		al,		00000010b
-	out		92h,	al
-	pop		ax
-	
+	mov	ax,	cs
+	mov	ds,	ax
+	mov	es,	ax
+	mov	ax,	0x00
+	mov	ss,	ax
+	mov	sp,	0x7c00
+
+;=======	display on screen : Start Loader......
+
+	mov	ax,	1301h
+	mov	bx,	000fh
+	mov	dx,	0200h		;row 2
+	mov	cx,	12
+	push	ax
+	mov	ax,	ds
+	mov	es,	ax
+	pop	ax
+	mov	bp,	StartLoaderMessage
+	int	10h
+
+;=======	open address A20
+	push	ax
+	in	al,	92h
+	or	al,	00000010b
+	out	92h,	al
+	pop	ax
+
 	cli
-	
-	db 		0x66
+
 	lgdt	[GdtPtr]	
 
 	mov	eax,	cr0
@@ -99,7 +108,6 @@ Label_Start:
 
 ;=======	search kernel.bin
 	mov	word	[SectorNo],	SectorNumOfRootDirStart
-	
 
 Lable_Search_In_Root_Dir_Begin:
 
@@ -157,7 +165,7 @@ Label_No_LoaderBin:
 
 	mov	ax,	1301h
 	mov	bx,	008Ch
-	mov	dx,	0400h		;row 4
+	mov	dx,	0300h		;row 3
 	mov	cx,	21
 	push	ax
 	mov	ax,	ds
@@ -167,7 +175,7 @@ Label_No_LoaderBin:
 	int	10h
 	jmp	$
 
-;=======	found kernel.bin name in root director struct
+;=======	found loader.bin name in root director struct
 
 Label_FileName_Found:
 	mov	ax,	RootDirSectors
@@ -177,16 +185,16 @@ Label_FileName_Found:
 	push	cx
 	add	cx,	ax
 	add	cx,	SectorBalance
-	mov	eax,	BaseTmpOfKernelAddr	;BaseOfKernelFile
+	mov	eax,	BaseTmpOfKernelAddr;BaseOfKernelFile
 	mov	es,	eax
-	mov	bx,	OffsetTmpOfKernelFile	;OffsetOfKernelFile
+	mov	bx,	OffsetTmpOfKernelFile;OffsetOfKernelFile
 	mov	ax,	cx
 
 Label_Go_On_Loading_File:
 	push	ax
 	push	bx
 	mov	ah,	0Eh
-	mov	al,	'#'
+	mov	al,	'.'
 	mov	bl,	0Fh
 	int	10h
 	pop	bx
@@ -204,7 +212,7 @@ Label_Go_On_Loading_File:
 	push	ds
 	push	esi
 
-	mov	cx,	200h      ;512
+	mov	cx,	200h
 	mov	ax,	BaseOfKernelFile
 	mov	fs,	ax
 	mov	edi,	dword	[OffsetOfKernelFileCount]
@@ -243,6 +251,7 @@ Label_Mov_Kernel:	;------------------
 	mov	dx,	RootDirSectors
 	add	ax,	dx
 	add	ax,	SectorBalance
+;	add	bx,	[BPB_BytesPerSec]	
 
 	jmp	Label_Go_On_Loading_File
 
@@ -251,7 +260,7 @@ Label_File_Loaded:
 	mov	ax, 0B800h
 	mov	gs, ax
 	mov	ah, 0Fh				; 0000: 黑底    1111: 白字
-	mov	al, 'X'
+	mov	al, 'G'
 	mov	[gs:((80 * 0 + 39) * 2)], ax	; 屏幕第 0 行, 第 39 列。
 
 KillMotor:
@@ -266,8 +275,8 @@ KillMotor:
 
 	mov	ax,	1301h
 	mov	bx,	000Fh
-	mov	dx,	0300h		;row 3
-	mov	cx,	24
+	mov	dx,	0400h		;row 4
+	mov	cx,	44
 	push	ax
 	mov	ax,	ds
 	mov	es,	ax
@@ -426,7 +435,6 @@ Label_SVGA_Mode_Info_Get:
 	jnz	Label_SVGA_Mode_Info_FAIL	
 
 	inc	dword		[SVGAModeCounter]
-
 	add	esi,	2
 	add	edi,	0x100
 
@@ -461,9 +469,6 @@ Label_SVGA_Mode_Info_Finish:
 	pop	ax
 	mov	bp,	GetSVGAModeInfoOKMessage
 	int	10h
-	
-	;到此为止调试过了 OK
-	;jmp $
 
 ;=======	set the SVGA mode(VESA VBE)
 
@@ -478,18 +483,14 @@ Label_SVGA_Mode_Info_Finish:
 
 	cli			;======close interrupt
 
-	db	0x66
 	lgdt	[GdtPtr]
 
-;	db	0x66
 ;	lidt	[IDT_POINTER]
 
 	mov	eax,	cr0
 	or	eax,	1
 	mov	cr0,	eax	
 
-	;jmp $
-	
 	jmp	dword SelectorCode32:GO_TO_TMP_Protect
 
 [SECTION .s32]
@@ -505,7 +506,7 @@ GO_TO_TMP_Protect:
 	mov	fs,	ax
 	mov	ss,	ax
 	mov	esp,	7E00h
-
+	
 	call	support_long_mode
 	test	eax,	eax
 
@@ -529,10 +530,9 @@ GO_TO_TMP_Protect:
 	mov	dword	[0x92020],	0x800083
 
 	mov	dword	[0x92028],	0xa00083
-
+	
 ;=======	load GDTR
-
-	db	0x66
+	
 	lgdt	[GdtPtr64]
 	mov	ax,	0x10
 	mov	ds,	ax
@@ -542,8 +542,7 @@ GO_TO_TMP_Protect:
 	mov	ss,	ax
 
 	mov	esp,	7E00h
-
-	;jmp $
+	
 ;=======	open PAE
 
 	mov	eax,	cr4
@@ -569,21 +568,7 @@ GO_TO_TMP_Protect:
 	bts	eax,	0
 	bts	eax,	31
 	mov	cr0,	eax
-	
-	
-	mov	ax,	1301h
-	mov	bx,	000Fh
-	mov	dx,	0F00h		;row 15
-	mov	cx,	61
-	push	ax
-	mov	ax,	ds
-	mov	es,	ax
-	pop	ax
-	mov	bp,	FinishLoaderSwitchKernel
-	int	10h
 
-	jmp $
-	
 	jmp	SelectorCode64:OffsetOfKernelFile
 
 ;=======	test support long mode or not
@@ -611,7 +596,7 @@ no_support:
 
 ;=======	read one sector from floppy
 
-[SECTION .s16lib]
+[SECTION .s116]
 [BITS 16]
 
 Func_ReadOneSector:
@@ -752,7 +737,7 @@ DisplayPosition		dd	0
 StartLoaderMessage:	db	"Start Loader"
 NoLoaderMessage:	db	"ERROR:No KERNEL Found"
 KernelFileName:		db	"KERNEL  BIN",0
-StartGetMemStructMessage:	db	"Start Get Memory Struct."
+StartGetMemStructMessage:	db	"Start Get Memory Struct (address,size,type)."
 GetMemStructErrMessage:	db	"Get Memory Struct ERROR"
 GetMemStructOKMessage:	db	"Get Memory Struct SUCCESSFUL!"
 
@@ -763,4 +748,7 @@ GetSVGAVBEInfoOKMessage:	db	"Get SVGA VBE Info SUCCESSFUL!"
 StartGetSVGAModeInfoMessage:	db	"Start Get SVGA Mode Info"
 GetSVGAModeInfoErrMessage:	db	"Get SVGA Mode Info ERROR"
 GetSVGAModeInfoOKMessage:	db	"Get SVGA Mode Info SUCCESSFUL!"
-FinishLoaderSwitchKernel:	db	"Loader finish! Next is Kernel (modified by xjc at 2020/12/22)"
+
+
+
+
