@@ -22,4 +22,4 @@ SectorBalance				equ		17
 	BS_BootSig			db	29h
 	BS_VolID			dd	0
 	BS_VolLab			db	'boot loader'
-	BS_fileSysType		db	'FAT12   '
+	BS_FileSysType		db	'FAT12   '

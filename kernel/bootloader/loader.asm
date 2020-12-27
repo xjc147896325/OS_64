@@ -58,8 +58,8 @@ Label_Start:
 
 	mov		ax,		1301h
 	mov 	bx,		000fh
-	mov		dx,		0200h			;row 2
-	mov 	cx,		34
+	mov		dx,		0100h			;row 1
+	mov 	cx,		43
 	push 	ax,
 	mov		ax,		ds
 	mov		es,		ax
@@ -609,7 +609,7 @@ no_support:
 
 ;=======	read one sector from floppy
 
-[SECTION .s16lib]
+[SECTION .s116]
 [BITS 16]
 
 Func_ReadOneSector:
@@ -747,7 +747,7 @@ DisplayPosition		dd	0
 
 ;=======	display messages
 
-StartLoaderMessage:	db	"Start Loader"
+StartLoaderMessage:	db	"Start Loader(modified by xjc at 2020/12/27)"
 NoLoaderMessage:	db	"ERROR:No KERNEL Found"
 KernelFileName:		db	"KERNEL  BIN",0
 StartGetMemStructMessage:	db	"Start Get Memory Struct (address,size,type)."
