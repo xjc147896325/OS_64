@@ -569,18 +569,24 @@ GO_TO_TMP_Protect:
 	mov	cr0,	eax
 	
 	
-	mov	ax,	1301h
-	mov	bx,	000Fh
-	mov	dx,	0F00h		;row 15
-	mov	cx,	61
-	push	ax
-	mov	ax,	ds
-	mov	es,	ax
-	pop	ax
-	mov	bp,	FinishLoaderSwitchKernel
-	int	10h
-
-	jmp $
+;	mov	ax,	1301h
+;	mov	bx,	000Fh
+;	mov	dx,	0F00h		;row 15
+;	mov	cx,	61
+;	push	ax
+;	mov	ax,	ds
+;	mov	es,	ax
+;	pop	ax
+;	mov	bp,	FinishLoaderSwitchKernel
+;	int	10h
+;这个不行，会滚出来，初步估计是因为进了IA32，换另一种显示模式试试
+;	mov	ax, 0B800h
+;	mov	gs, ax
+;	mov	ah, 0Fh				; 0000: 黑底    1111: 白字
+;	mov	al, 'X'
+;	mov	[gs:((80 * 0 + 39) * 2)], ax	; 屏幕第 0 行, 第 39 列。
+;也不行。感觉是不能再这样搞寄存器？ 不清楚
+;	jmp $
 	
 	jmp	SelectorCode64:OffsetOfKernelFile
 
