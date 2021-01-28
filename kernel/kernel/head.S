@@ -137,7 +137,7 @@ IDT_BASE:	.quad	IDT_Table
 
 //=======	TSS64_Table
 
-.global	TSS64_Table
+.globl	TSS64_Table
 
 TSS64_Table:
 	.fill	13, 8, 0
