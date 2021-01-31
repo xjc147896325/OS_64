@@ -8,8 +8,8 @@ main.o: main.c
 	gcc -mcmodel=large -fno-builtin -m64 -c main.c
 
 head.o: head.S
-	gcc -E head.S > head.s
-	as --64 -o head.o head.s
+	gcc -E head.S > head12.s
+	as --64 -o head.o head12.s
 	
 clean:
 	rm -rf *.o *.s *.S~ *.c~ .h~ system Makefile~ Kernel.lds~ kernel.bin
