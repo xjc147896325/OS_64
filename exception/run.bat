@@ -1,0 +1,1 @@
+"D:/Bochs-2.6.11/bochsdbg" -q -f bochsrc.bxrc
