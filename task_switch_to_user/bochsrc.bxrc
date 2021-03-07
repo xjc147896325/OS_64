@@ -1,0 +1,29 @@
+###############################################################
+# bochsrc.txt file for DLX Linux disk image.
+###############################################################
+
+# how much memory the emulated machine will have
+megs: 2048
+
+
+boot: floppy
+
+# what disk images will be used 
+floppya: 1_44=boot.img, status=inserted
+#floppyb: 1_44=floppyb.img, status=inserted
+
+
+
+#display_library: x
+# other choices: win32 sdl wx carbon amigaos beos macintosh nogui rfb term svga
+
+# where do we send log messages?
+log: bochsout.txt
+
+# disable the mouse, since DLX is text only
+#mouse: enabled=0
+
+# set up IPS value and clock sync
+cpu: ips=15000000
+clock: sync=both
+

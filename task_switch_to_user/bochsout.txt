@@ -33,7 +33,7 @@
 00000000000i[      ]   Sound support: SB16 ES1370
 00000000000i[      ]   USB support: UHCI OHCI EHCI xHCI
 00000000000i[      ]   VGA extension support: vbe cirrus voodoo
-00000000000i[MEM0  ] allocated memory at 0000028DDBC25040. after alignment, vector=0000028DDBC26000
+00000000000i[MEM0  ] allocated memory at 000001958F3BB040. after alignment, vector=000001958F3BC000
 00000000000i[MEM0  ] 2048.00MB
 00000000000i[MEM0  ] mem block size = 0x00020000, blocks=16384
 00000000000i[MEM0  ] rom at 0xfffe0000/131072 ('D:\Bochs-2.6.11/BIOS-bochs-latest')
@@ -44,7 +44,7 @@
 00000000000i[DEV   ] PIIX3 PCI-to-ISA bridge present at device 1, function 0
 00000000000i[PLUGIN] init_dev of 'cmos' plugin device by virtual method
 00000000000i[CMOS  ] Using local time for initial clock
-00000000000i[CMOS  ] Setting initial clock to: Sat Mar 06 17:38:00 2021 (time0=1615023480)
+00000000000i[CMOS  ] Setting initial clock to: Sun Mar 07 22:08:06 2021 (time0=1615126086)
 00000000000i[PLUGIN] init_dev of 'dma' plugin device by virtual method
 00000000000i[DMA   ] channel 4 used by cascade
 00000000000i[PLUGIN] init_dev of 'pic' plugin device by virtual method
@@ -229,10 +229,10 @@
 00001532940i[BXVGA ] VBE known Display Interface b0c0
 00001532972i[BXVGA ] VBE known Display Interface b0c5
 00001535615i[VBIOS ] VBE Bios $Id: vbe.c 228 2020-01-02 23:09:02Z vruppert $
-00001866847i[WINGUI] dimension update x=720 y=400 fontheight=16 fontwidth=9 bpp=8
-00052999469i[BIOS  ] Booting from 0000:7c00
-00217904274i[BXVGA ] VBE set bpp (32)
-00217904296i[BXVGA ] VBE set xres (1440)
-00217904335i[BXVGA ] VBE set yres (900)
-00217904373i[BXVGA ] VBE enabling x 1440, y 900, bpp 32, 5184000 bytes visible
-00217904373i[WINGUI] dimension update x=1440 y=900 fontheight=0 fontwidth=0 bpp=32
+00001653667i[WINGUI] dimension update x=720 y=400 fontheight=16 fontwidth=9 bpp=8
+00053102609i[BIOS  ] Booting from 0000:7c00
+00218007279i[BXVGA ] VBE set bpp (32)
+00218007301i[BXVGA ] VBE set xres (1440)
+00218007340i[BXVGA ] VBE set yres (900)
+00218007378i[BXVGA ] VBE enabling x 1440, y 900, bpp 32, 5184000 bytes visible
+00218007378i[WINGUI] dimension update x=1440 y=900 fontheight=0 fontwidth=0 bpp=32
